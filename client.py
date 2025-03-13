@@ -50,13 +50,12 @@ def connect():
         #200 code will not trigger an exception
 
         connectGridDeactivate()
-        start_monitoring()
         graphEnable()
+        start_monitoring()
     except Exception as e:
         messagebox.showwarning("Connection Error", f"{e}")
 
 def start_monitoring():
-    graphEnable()
     update_stats()
     update_graph()
 
