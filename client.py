@@ -38,8 +38,8 @@ def graphEnable():
     disk_label.grid(row=7, column=0)
     network_label.grid(row=7, column=1)
     canvas.get_tk_widget().grid(row=0, column=0, columnspan=2)
-
-
+    boot_label.grid(row=8, column=0)
+    swap_label.grid(row = 8, column=1)
 def connect():
     global IP, PORT
     IP = entryIP.get()
@@ -56,46 +56,52 @@ def connect():
         messagebox.showwarning("Connection Error", f"{e}")
 
 def start_monitoring():
-    update_stats()
-    update_graph()
-
-def update_stats():
     stats = fetch_stats()
+    update_stats(stats)
+    update_graph(stats)
+    window.after(1000, start_monitoring)  # Refresh every second
+
+def update_stats(stats):
     if stats:
         cpu_label.config(text=f"CPU Usage: {stats['cpu_usage']}%")
         memory_label.config(text=f"Memory Usage: {stats['memory_usage']}%")
         disk_label.config(text=f"Disk Usage: {stats['disk_usage']}%")
         network_label.config(text=f"Network Sent: {stats['network_sent']} | Received: {stats['network_received']}")
+        boot_label.config(text=f"Current Boot Time: {stats['boot_time']}")
+        swap_label.config(text=f"Swap Memory: {stats['swap']}%")
 
-    window.after(1000, update_stats)  # Refresh every second
-
-
-
-def update_graph():
-    stats = fetch_stats()
+def update_graph(stats):
     if stats:
-        for key, value in [("cpu", stats["cpu_usage"]), ("memory", stats["memory_usage"]), ("disk", stats["disk_usage"]), ("networkSent", stats["network_sent"]), ("networkReceived", stats["network_received"])]:
+        for key, value in [("cpu", stats["cpu_usage"]), ("memory", stats["memory_usage"]), ("disk", stats["disk_usage"]), ("swap", stats["swap"]), ("load", stats["load"])]:
             history[key].append(value)
             if len(history[key]) > 60:  # Keep only last 60 seconds
                 history[key].pop(0)
-
+            #if history[key][len(history[key])-2] == value:
+            #    history[key][-1] += 0.0001
+        load1, load5, load15 = history["load"]
+        print(load1, load5, load15)
         cpu_line.set_ydata(history["cpu"])
         memory_line.set_ydata(history["memory"])
         disk_line.set_ydata(history["disk"])
-        networkRecv_line.set_ydata((history["networkSent"]))
-        networkSent_line.set_ydata((history["networkReceived"]))
+        swap_line.set_ydata(history["swap"])
+        load1_line.set_ydata(history["load"][0])
+        load5_line.set_ydata(history["load"][1])
+        load15_line.set_ydata(history["load"][2])
+
+
         cpu_line.set_xdata(range(len(history["cpu"])))
         memory_line.set_xdata(range(len(history["memory"])))
         disk_line.set_xdata(range(len(history["disk"])))
-        networkRecv_line.set_xdata(range(len(history["networkSent"])))
-        networkSent_line.set_xdata(range(len(history["networkReceived"])))
+        swap_line.set_xdata(range(len(history["swap"])))
+        load1_line.set_xdata(range(len(history["load"][0])))
+        load5_line.set_xdata(range(len(history["load"][1])))
+        load15_line.set_xdata(range(len(history["load"][2])))
 
 
         ax.relim()
         ax.autoscale_view()
         canvas.draw()
 
-    window.after(1000, update_graph)
 
 
 
@@ -104,7 +110,7 @@ def update_graph():
 if __name__ == "__main__":
     window = tk.Tk()
     window.title("Server Monitoring")
-    window.geometry("500x500")
+    window.geometry("600x600")
 
 
     labelIP = tk.Label(window, text="Enter IP Address of Server")
@@ -126,10 +132,11 @@ if __name__ == "__main__":
     memory_label = tk.Label(window, text="Memory Usage: --%")
     disk_label = tk.Label(window, text="Disk Usage: --%")
     network_label = tk.Label(window, text="Network Sent/Received: --")
-
+    boot_label = tk.Label(window, text= "Current Boot Time: --")
+    swap_label = tk.Label(window, text= "Swap memory: --%")
 
     # --- Graph Setup ---
-    history = {"cpu": [], "memory": [], "disk": [], "networkSent": [], "networkReceived": []}
+    history = {"cpu": [], "memory": [], "disk": [], "networkSent": [], "networkReceived": [], "swap": [], "load": []}
     fig, ax = plt.subplots()
     ax.set_ylim(0, 100)  # Assuming percentage values
     ax.set_xlim(0, 60)  # 60 seconds history
@@ -139,8 +146,11 @@ if __name__ == "__main__":
     cpu_line, = ax.plot([], [], label="CPU")
     memory_line, = ax.plot([], [], label="Memory")
     disk_line, = ax.plot([], [], label="Disk")
-    networkRecv_line, = ax.plot([],[], label="Network Recv")
-    networkSent_line, = ax.plot([],[], label="Network Sent")
+    swap_line, =ax.plot([],[], label="Swap")
+    load1_line, = ax.plot([],[], label="Load (1-Min)")
+    load5_line, = ax.plot([],[], label="Load (5-Min)")
+    load15_line, = ax.plot([],[], label="Load (15-Min)")
+
     ax.legend()
 
     canvas = FigureCanvasTkAgg(fig, master=window)
