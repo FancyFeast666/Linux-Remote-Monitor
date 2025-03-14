@@ -7,7 +7,11 @@ from tkinter import filedialog
 import customtkinter
 import matplotlib.pyplot as plt
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
+from matplotlib.pyplot import title
 
+global num, cat
+num = None
+cat = None
 
 def fetch_stats():
     global IP
@@ -40,6 +44,13 @@ def graphEnable():
     canvas.get_tk_widget().grid(row=0, column=0, columnspan=2)
     boot_label.grid(row=8, column=0)
     swap_label.grid(row = 8, column=1)
+    load1_label.grid(row=9, column=0)
+    thresholdLabel.grid(row=10, column=0)
+    thresholdCatLabel.grid(row=10, column=1)
+    thresholdSelect.grid(row=11, column=0)
+    thresholdSelection.grid(row=11, rowspan=5, column=1)
+    threshold.grid(row=12, column=0)
+    leave.grid(row=13, column =0)
 def connect():
     global IP, PORT
     IP = entryIP.get()
@@ -57,9 +68,13 @@ def connect():
 
 def start_monitoring():
     stats = fetch_stats()
-    update_stats(stats)
-    update_graph(stats)
-    window.after(1000, start_monitoring)  # Refresh every second
+    if stats != None:
+        update_stats(stats)
+        update_graph(stats)
+    else:
+        messagebox.showerror(title="Connection Error", message="Connection disrupted")
+
+    window.after(1000, start_monitoring)
 
 def update_stats(stats):
     if stats:
@@ -67,35 +82,37 @@ def update_stats(stats):
         memory_label.config(text=f"Memory Usage: {stats['memory_usage']}%")
         disk_label.config(text=f"Disk Usage: {stats['disk_usage']}%")
         network_label.config(text=f"Network Sent: {stats['network_sent']} | Received: {stats['network_received']}")
-        boot_label.config(text=f"Current Boot Time: {stats['boot_time']}")
+        boot_label.config(text=f"Current Boot Time in Seconds: {stats['boot_time']}")
         swap_label.config(text=f"Swap Memory: {stats['swap']}%")
+        load1_label.config(text=f"Load 1-Min: {stats['load'][0]}%")
 
 def update_graph(stats):
+    global num, cat
     if stats:
         for key, value in [("cpu", stats["cpu_usage"]), ("memory", stats["memory_usage"]), ("disk", stats["disk_usage"]), ("swap", stats["swap"]), ("load", stats["load"])]:
+            if cat == key and num != None:
+                if value >= num:
+                    messagebox.showwarning(title="Threshold exceeded", message=f"The threshold for {cat} has been exceeded")
             history[key].append(value)
             if len(history[key]) > 60:  # Keep only last 60 seconds
                 history[key].pop(0)
-            #if history[key][len(history[key])-2] == value:
-            #    history[key][-1] += 0.0001
-        load1, load5, load15 = history["load"]
-        print(load1, load5, load15)
+
+
+
+
         cpu_line.set_ydata(history["cpu"])
         memory_line.set_ydata(history["memory"])
         disk_line.set_ydata(history["disk"])
         swap_line.set_ydata(history["swap"])
-        load1_line.set_ydata(history["load"][0])
-        load5_line.set_ydata(history["load"][1])
-        load15_line.set_ydata(history["load"][2])
+        load1_line.set_ydata(history["load"])
 
 
         cpu_line.set_xdata(range(len(history["cpu"])))
         memory_line.set_xdata(range(len(history["memory"])))
         disk_line.set_xdata(range(len(history["disk"])))
         swap_line.set_xdata(range(len(history["swap"])))
-        load1_line.set_xdata(range(len(history["load"][0])))
-        load5_line.set_xdata(range(len(history["load"][1])))
-        load15_line.set_xdata(range(len(history["load"][2])))
+        load1_line.set_xdata(range(len(history["load"])))
+
 
 
         ax.relim()
@@ -103,9 +120,16 @@ def update_graph(stats):
         canvas.draw()
 
 
+def set_threshold():
+    global num, cat
+    try:
+        num = thresholdSelect.get()
+        cat = thresholdSelection.selection_get()
+    except Exception as e:
+        messagebox.showwarning(title="Selection Error", message=f"Improper selection, please try again")
 
-
-
+def exit():
+    quit()
 
 if __name__ == "__main__":
     window = tk.Tk()
@@ -134,6 +158,7 @@ if __name__ == "__main__":
     network_label = tk.Label(window, text="Network Sent/Received: --")
     boot_label = tk.Label(window, text= "Current Boot Time: --")
     swap_label = tk.Label(window, text= "Swap memory: --%")
+    load1_label = tk.Label(window, text ="1-Minute Load:--%")
 
     # --- Graph Setup ---
     history = {"cpu": [], "memory": [], "disk": [], "networkSent": [], "networkReceived": [], "swap": [], "load": []}
@@ -148,11 +173,20 @@ if __name__ == "__main__":
     disk_line, = ax.plot([], [], label="Disk")
     swap_line, =ax.plot([],[], label="Swap")
     load1_line, = ax.plot([],[], label="Load (1-Min)")
-    load5_line, = ax.plot([],[], label="Load (5-Min)")
-    load15_line, = ax.plot([],[], label="Load (15-Min)")
+
 
     ax.legend()
 
     canvas = FigureCanvasTkAgg(fig, master=window)
 
+    thresholdLabel =tk.Label(window, text ="Select a threshold value")
+    thresholdSelect = Scale(window, from_=1, to = 100, orient=HORIZONTAL)
+    thresholdCatLabel = tk.Label(window, text="Select a category to prioritize")
+
+    thresholdSelection = Listbox(window, selectmode=tk.SINGLE)
+    for cat in {"cpu", "memory", "disk", "swap", "load"}:
+        thresholdSelection.insert(END, str(cat))
+
+    threshold = tk.Button(window, text="Select Threshold conditions", command=set_threshold)
+    leave = tk.Button(window, text="Quit Program", command=exit)
     window.mainloop()
