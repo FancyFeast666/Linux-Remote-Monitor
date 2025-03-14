@@ -11,4 +11,20 @@ async def stats():
         "disk_usage": psutil.disk_usage("/").percent,
         "network_sent": psutil.net_io_counters().bytes_sent,
         "network_received": psutil.net_io_counters().bytes_recv,
+        "boot_time": get_uptime(),
+        "swap": psutil.swap_memory().percent,
+        "load": get_load_avg()
     }
+
+@app.get("/status")
+async def status():
+    return True
+def get_uptime():
+    with open("/proc/uptime","r") as f:
+        uptime_seconds = float(f.readline().split()[0])
+    return uptime_seconds
+
+def get_load_avg():
+    with open("/proc/loadavg", "r") as f:
+        loadavg = f.read().split()[:3]
+        return {float(loadavg[0])}
