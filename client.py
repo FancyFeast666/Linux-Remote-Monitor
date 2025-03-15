@@ -84,7 +84,7 @@ def update_stats(stats):
         network_label.config(text=f"Network Sent: {stats['network_sent']} | Received: {stats['network_received']}")
         boot_label.config(text=f"Current Boot Time in Seconds: {stats['boot_time']}")
         swap_label.config(text=f"Swap Memory: {stats['swap']}%")
-        load1_label.config(text=f"Load 1-Min: {stats['load'][0]}%")
+        load1_label.config(text=f"Load 1-Min: {stats['load']}%")
 
 def update_graph(stats):
     global num, cat

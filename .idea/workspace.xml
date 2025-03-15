@@ -4,11 +4,11 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="619777a8-4817-45a3-ac9a-e92df492e6ca" name="Changes" comment="fd">
-      <change afterPath="$PROJECT_DIR$/client.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/server.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+    <list default="true" id="619777a8-4817-45a3-ac9a-e92df492e6ca" name="Changes" comment="updated version of the server to handle the additional metrics">
+      <change afterPath="$PROJECT_DIR$/stat_writer.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client.py" beforeDir="false" afterPath="$PROJECT_DIR$/client.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server.py" beforeDir="false" afterPath="$PROJECT_DIR$/server.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -30,21 +30,21 @@
     </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
-  <component name="GitHubPullRequestSearchHistory"><![CDATA[{
-  "lastFilter": {
-    "state": "OPEN",
-    "assignee": "FancyFeast666"
+  <component name="GitHubPullRequestSearchHistory">{
+  &quot;lastFilter&quot;: {
+    &quot;state&quot;: &quot;OPEN&quot;,
+    &quot;assignee&quot;: &quot;FancyFeast666&quot;
   }
-}]]></component>
-  <component name="GithubPullRequestsUISettings"><![CDATA[{
-  "selectedUrlAndAccountId": {
-    "url": "https://github.com/FancyFeast666/Linux-Remote-Monitor",
-    "accountId": "9e474e94-800e-4fe1-a2bb-d6f798a2f0e1"
+}</component>
+  <component name="GithubPullRequestsUISettings">{
+  &quot;selectedUrlAndAccountId&quot;: {
+    &quot;url&quot;: &quot;https://github.com/FancyFeast666/Linux-Remote-Monitor&quot;,
+    &quot;accountId&quot;: &quot;9e474e94-800e-4fe1-a2bb-d6f798a2f0e1&quot;
   }
-}]]></component>
-  <component name="ProjectColorInfo"><![CDATA[{
-  "associatedIndex": 4
-}]]></component>
+}</component>
+  <component name="ProjectColorInfo">{
+  &quot;associatedIndex&quot;: 4
+}</component>
   <component name="ProjectId" id="2tuD1xiveFCdBmCyjtfBtIW1Rz4" />
   <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
   <component name="ProjectViewState">
@@ -54,10 +54,42 @@
   <component name="PropertiesComponent"><![CDATA[{
   "keyToString": {
     "Python.client.executor": "Run",
+    "Python.server.executor": "Run",
+    "Python.stat_writer.executor": "Run",
+    "Python.temp.executor": "Run",
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "git-widget-placeholder": "testing"
   }
 }]]></component>
+  <component name="RunManager">
+    <configuration name="client" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+      <module name="Linux Remote Monitor" />
+      <option name="ENV_FILES" value="" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/client.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
+    <recent_temporary>
+      <list>
+        <item itemvalue="Python.client" />
+      </list>
+    </recent_temporary>
+  </component>
   <component name="SharedIndexes">
     <attachedChunks>
       <set>
@@ -82,11 +114,94 @@
       <option name="project" value="LOCAL" />
       <updated>1741192892436</updated>
     </task>
-    <option name="localTasksCounter" value="2" />
+    <task id="LOCAL-00002" summary="beginning of GUI creation">
+      <option name="closed" value="true" />
+      <created>1741712850476</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1741712850476</updated>
+    </task>
+    <task id="LOCAL-00003" summary="updating server side">
+      <option name="closed" value="true" />
+      <created>1741713131656</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1741713131656</updated>
+    </task>
+    <task id="LOCAL-00004" summary="updating gui to have connection verification">
+      <option name="closed" value="true" />
+      <created>1741795463129</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1741795463129</updated>
+    </task>
+    <task id="LOCAL-00005" summary="first version of gui with statistical information, very buggy">
+      <option name="closed" value="true" />
+      <created>1741875592434</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1741875592434</updated>
+    </task>
+    <task id="LOCAL-00006" summary="2nd version of stats, still buggy, committing for possible fallback">
+      <option name="closed" value="true" />
+      <created>1741884045336</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1741884045336</updated>
+    </task>
+    <task id="LOCAL-00007" summary="3rd version of stats, almost done getting all 5 with current and historical needed for req">
+      <option name="closed" value="true" />
+      <created>1741961203863</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL-00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1741961203863</updated>
+    </task>
+    <task id="LOCAL-00008" summary="hopefully final version of the client minus comments. has the stats needed and the ability to add a threshold and exit the program">
+      <option name="closed" value="true" />
+      <created>1741976424576</created>
+      <option name="number" value="00008" />
+      <option name="presentableId" value="LOCAL-00008" />
+      <option name="project" value="LOCAL" />
+      <updated>1741976424576</updated>
+    </task>
+    <task id="LOCAL-00009" summary="updated version of the server to handle the additional metrics">
+      <option name="closed" value="true" />
+      <created>1741976755672</created>
+      <option name="number" value="00009" />
+      <option name="presentableId" value="LOCAL-00009" />
+      <option name="project" value="LOCAL" />
+      <updated>1741976755672</updated>
+    </task>
+    <option name="localTasksCounter" value="10" />
     <servers />
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="fd" />
-    <option name="LAST_COMMIT_MESSAGE" value="fd" />
+    <MESSAGE value="beginning of GUI creation" />
+    <MESSAGE value="updating server side" />
+    <MESSAGE value="updating gui to have connection verification" />
+    <MESSAGE value="first version of gui with statistical information, very buggy" />
+    <MESSAGE value="2nd version of stats, still buggy, committing for possible fallback" />
+    <MESSAGE value="3rd version of stats, almost done getting all 5 with current and historical needed for req" />
+    <MESSAGE value="hopefully final version of the client minus comments. has the stats needed and the ability to add a threshold and exit the program" />
+    <MESSAGE value="updated version of the server to handle the additional metrics" />
+    <option name="LAST_COMMIT_MESSAGE" value="updated version of the server to handle the additional metrics" />
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/client.py</url>
+          <line>68</line>
+          <option name="timeStamp" value="2" />
+        </line-breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
   </component>
 </project>
