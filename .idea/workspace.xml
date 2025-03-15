@@ -4,11 +4,12 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="619777a8-4817-45a3-ac9a-e92df492e6ca" name="Changes" comment="updated version of the server to handle the additional metrics">
-      <change afterPath="$PROJECT_DIR$/stat_writer.py" afterDir="false" />
+    <list default="true" id="619777a8-4817-45a3-ac9a-e92df492e6ca" name="Changes" comment="Creation of the stat_writer file to send the stats into a named pipe which will then be accessed by the api, caused a few changes but mainly just moved stuff out of server.py and into stat_writer.py">
+      <change afterPath="$PROJECT_DIR$/stress_test.sh" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/client.py" beforeDir="false" afterPath="$PROJECT_DIR$/client.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/server.py" beforeDir="false" afterPath="$PROJECT_DIR$/server.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/stat_writer.py" beforeDir="false" afterPath="$PROJECT_DIR$/stat_writer.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -178,7 +179,15 @@
       <option name="project" value="LOCAL" />
       <updated>1741976755672</updated>
     </task>
-    <option name="localTasksCounter" value="10" />
+    <task id="LOCAL-00010" summary="Creation of the stat_writer file to send the stats into a named pipe which will then be accessed by the api, caused a few changes but mainly just moved stuff out of server.py and into stat_writer.py">
+      <option name="closed" value="true" />
+      <created>1742052975120</created>
+      <option name="number" value="00010" />
+      <option name="presentableId" value="LOCAL-00010" />
+      <option name="project" value="LOCAL" />
+      <updated>1742052975120</updated>
+    </task>
+    <option name="localTasksCounter" value="11" />
     <servers />
   </component>
   <component name="VcsManagerConfiguration">
@@ -191,15 +200,16 @@
     <MESSAGE value="3rd version of stats, almost done getting all 5 with current and historical needed for req" />
     <MESSAGE value="hopefully final version of the client minus comments. has the stats needed and the ability to add a threshold and exit the program" />
     <MESSAGE value="updated version of the server to handle the additional metrics" />
-    <option name="LAST_COMMIT_MESSAGE" value="updated version of the server to handle the additional metrics" />
+    <MESSAGE value="Creation of the stat_writer file to send the stats into a named pipe which will then be accessed by the api, caused a few changes but mainly just moved stuff out of server.py and into stat_writer.py" />
+    <option name="LAST_COMMIT_MESSAGE" value="Creation of the stat_writer file to send the stats into a named pipe which will then be accessed by the api, caused a few changes but mainly just moved stuff out of server.py and into stat_writer.py" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
       <breakpoints>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/client.py</url>
-          <line>68</line>
-          <option name="timeStamp" value="2" />
+          <line>25</line>
+          <option name="timeStamp" value="3" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>

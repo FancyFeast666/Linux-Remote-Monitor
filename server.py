@@ -5,7 +5,7 @@ app = FastAPI()
 
 pipe = "/tmp/system_stats"
 
-@app.get("/stats")
+@api.get("/stats")
 async def stats():
     #reads the system stats from the pipe and returns it under the /stats"
     try:
@@ -15,6 +15,7 @@ async def stats():
     except Exception as e:
         return {"error": f"Failed to read stats: {str(e)}"}
 
+#used for the initial connection to determine if the server is available
 @app.get("/status")
-async def status():
+asyic def status():
     return True

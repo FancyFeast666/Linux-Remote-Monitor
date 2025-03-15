@@ -4,7 +4,6 @@ import tkinter as tk
 from tkinter import *
 from tkinter import messagebox
 from tkinter import filedialog
-import customtkinter
 import matplotlib.pyplot as plt
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
 from matplotlib.pyplot import title
@@ -13,6 +12,7 @@ global num, cat
 num = None
 cat = None
 
+#used to access the endpoint to obtain the statistical information
 def fetch_stats():
     global IP
     try:
@@ -22,6 +22,7 @@ def fetch_stats():
     except requests.exceptions.RequestException:
         return None
 
+#used for deactivating the intitial screen for connecting to the server
 def connectGridDeactivate():
     connect.grid_forget()
     labelIP.grid_forget()
@@ -29,13 +30,7 @@ def connectGridDeactivate():
     labelPort.grid_forget()
     entryPort.grid_forget()
 
-def connectGridActivate():
-    labelIP.grid(row=1, column=0, ipady=10)
-    entryIP.grid(row =2, column=0, ipady=10)
-    labelPort.grid(row=3, column=0, ipady=10)
-    entryPort.grid(row=4, column=0, ipady=10)
-    connect.grid(row=9, column=0, ipady=10)
-
+#used to enable all the tkinter widgets regarding the graph and statistical information
 def graphEnable():
     cpu_label.grid(row=6, column=0)
     memory_label.grid(row=6, column=1)
@@ -51,6 +46,8 @@ def graphEnable():
     thresholdSelection.grid(row=11, rowspan=5, column=1)
     threshold.grid(row=12, column=0)
     leave.grid(row=13, column =0)
+
+#function used to do the initial connection to the server to see if it is available and then progress the GUI
 def connect():
     global IP, PORT
     IP = entryIP.get()
@@ -66,6 +63,7 @@ def connect():
     except Exception as e:
         messagebox.showwarning("Connection Error", f"{e}")
 
+#function used to continuosly obtain new data from the endpoint and then send it into the labels and the graph
 def start_monitoring():
     stats = fetch_stats()
     if stats != None:
@@ -76,6 +74,7 @@ def start_monitoring():
 
     window.after(1000, start_monitoring)
 
+#function used to update the labels with the new statistics
 def update_stats(stats):
     if stats:
         cpu_label.config(text=f"CPU Usage: {stats['cpu_usage']}%")
@@ -86,6 +85,7 @@ def update_stats(stats):
         swap_label.config(text=f"Swap Memory: {stats['swap']}%")
         load1_label.config(text=f"Load 1-Min: {stats['load']}%")
 
+#function used to update the graph with the new statistics, it has a check regarding the threshold set by the user where if it is tripped it will show a warning message
 def update_graph(stats):
     global num, cat
     if stats:
@@ -94,32 +94,29 @@ def update_graph(stats):
                 if value >= num:
                     messagebox.showwarning(title="Threshold exceeded", message=f"The threshold for {cat} has been exceeded")
             history[key].append(value)
-            if len(history[key]) > 60:  # Keep only last 60 seconds
+
+            if len(history[key]) > 60:  # retaining only the last 60 seconds on data
                 history[key].pop(0)
 
-
-
-
+        #updating the y data for the various lines
         cpu_line.set_ydata(history["cpu"])
         memory_line.set_ydata(history["memory"])
         disk_line.set_ydata(history["disk"])
         swap_line.set_ydata(history["swap"])
         load1_line.set_ydata(history["load"])
 
-
+        #updating the x data for the various lines
         cpu_line.set_xdata(range(len(history["cpu"])))
         memory_line.set_xdata(range(len(history["memory"])))
         disk_line.set_xdata(range(len(history["disk"])))
         swap_line.set_xdata(range(len(history["swap"])))
         load1_line.set_xdata(range(len(history["load"])))
 
-
-
         ax.relim()
         ax.autoscale_view()
         canvas.draw()
 
-
+#function used to set the threshold based on user input, if an invalid selection is made, then a warning box is produced
 def set_threshold():
     global num, cat
     try:
@@ -128,13 +125,16 @@ def set_threshold():
     except Exception as e:
         messagebox.showwarning(title="Selection Error", message=f"Improper selection, please try again")
 
+#function tied to the Quit Program button to gracefully exit the program
 def exit():
     quit()
 
 if __name__ == "__main__":
+
+    #creation of the tkinter gui involving labels, buttons, entry fields, and a graph
     window = tk.Tk()
     window.title("Server Monitoring")
-    window.geometry("600x600")
+    window.geometry("800x800")
 
 
     labelIP = tk.Label(window, text="Enter IP Address of Server")
@@ -160,11 +160,10 @@ if __name__ == "__main__":
     swap_label = tk.Label(window, text= "Swap memory: --%")
     load1_label = tk.Label(window, text ="1-Minute Load:--%")
 
-    # --- Graph Setup ---
     history = {"cpu": [], "memory": [], "disk": [], "networkSent": [], "networkReceived": [], "swap": [], "load": []}
     fig, ax = plt.subplots()
-    ax.set_ylim(0, 100)  # Assuming percentage values
-    ax.set_xlim(0, 60)  # 60 seconds history
+    ax.set_ylim(0, 100)
+    ax.set_xlim(0, 60)
     ax.set_xlabel("Time (s)")
     ax.set_ylabel("Usage (%)")
 

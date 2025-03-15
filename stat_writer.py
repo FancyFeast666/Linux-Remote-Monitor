@@ -26,11 +26,14 @@ def write_stats():
             fifo.write(stats_str + "\n")
 
         time.sleep(1)  #updating the pipe with new stats each second
+
+#used to obtain the current uptime of the server in seconds
 def get_uptime():
     with open("/proc/uptime","r") as f:
         uptime_seconds = float(f.readline().split()[0])
     return uptime_seconds
 
+#used to obtain the 1-minute load average of the server
 def get_load_avg():
     with open("/proc/loadavg", "r") as f:
         loadavg = f.read().split()[:3]
